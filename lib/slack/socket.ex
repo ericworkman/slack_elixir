@@ -53,7 +53,7 @@ defmodule Slack.Socket do
 
         {:reply, ack_frame(msg), state}
 
-      {:ok, %{"type" => "block_actions", "payload" => payload} = msg} ->
+      {:ok, %{"type" => "interactive", "payload" => payload} = msg} ->
         Logger.debug("[Slack.Socket] message: #{inspect(msg)}")
 
         Task.Supervisor.start_child(

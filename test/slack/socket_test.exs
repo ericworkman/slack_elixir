@@ -29,10 +29,10 @@ defmodule Slack.SocketTest do
   }
   """
 
-  @block_action """
+  @interactive """
   {
     "envelope_id": "eid-567",
-    "type": "block_actions",
+    "type": "interactive",
     "payload": {
       "channel": {
         "name": "directmessage"
@@ -97,10 +97,10 @@ defmodule Slack.SocketTest do
              Slack.Socket.handle_frame({:text, @slash_command}, %{})
   end
 
-  test "socket can handle a block action" do
+  test "socket can handle an interactive event" do
     stub(Slack.API)
 
     assert {:reply, {:text, ~S({"envelope_id":"eid-567"})}, %{}} =
-             Slack.Socket.handle_frame({:text, @block_action}, %{})
+             Slack.Socket.handle_frame({:text, @interactive}, %{})
   end
 end
