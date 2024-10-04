@@ -29,6 +29,31 @@ defmodule Slack.SocketTest do
   }
   """
 
+  @block_action """
+  {
+    "envelope_id": "eid-567",
+    "type": "block_actions",
+    "payload": {
+      "channel": {
+        "name": "directmessage"
+      },
+      "actions": [
+        {
+          "action_id": "rHpvf",
+          "block_id": "QUJjW",
+          "text": {
+            "type": "plain_text",
+            "text": "Yes",
+            "emoji": true
+          },
+          "type": "button",
+          "action_ts": "1728049294.774812"
+        }
+      ]
+    }
+  }
+  """
+
   @bot %Slack.Bot{
     id: "bot-123-ABC",
     module: TestBot,
@@ -70,5 +95,12 @@ defmodule Slack.SocketTest do
 
     assert {:reply, {:text, ~S({"envelope_id":"eid-567"})}, %{}} =
              Slack.Socket.handle_frame({:text, @slash_command}, %{})
+  end
+
+  test "socket can handle a block action" do
+    stub(Slack.API)
+
+    assert {:reply, {:text, ~S({"envelope_id":"eid-567"})}, %{}} =
+             Slack.Socket.handle_frame({:text, @block_action}, %{})
   end
 end
